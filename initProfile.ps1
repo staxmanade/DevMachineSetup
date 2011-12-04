@@ -1,5 +1,6 @@
 
-$globalProfileScriptsPath = (get-item .\GlobalScripts\)
+
+$globalProfileScriptsPath = (get-item "$(split-path $profile)\PsProfile\GlobalScripts\")
 
 foreach($file in $globalProfileScriptsPath.GetFiles("*.ps1"))
 {
