@@ -12,7 +12,8 @@ Run the following script to init a new machine
     
     	git clone git@github.com:staxmanade/PsProfile.git
     
-    	". .\PsProfile\initProfile.ps1" | Out-File $profile -append
+    	". `"$(split-path $profile)\PsProfile\initProfile.ps1`"" | Out-File $profile -append
     
     	. $profile
     popd
+    
