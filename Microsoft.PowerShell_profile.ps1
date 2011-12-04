@@ -1,10 +1,10 @@
 
 $globalProfileScriptsPath = (get-item .\GlobalScripts\)
 
-foreach($file in "$($globalProfileScriptsPath)\*.ps1")
+foreach($file in $globalProfileScriptsPath.GetFiles("*.ps1"))
 {
-	"Dot Sourcing Script - $file"
-	. $file
+	"Dot Sourcing Script - $($file.FullName)"
+	. $file.FullName
 }
 
 
