@@ -31,7 +31,7 @@ Run the following script to init a new machine
     		if(!(cat $profile | select-string 'PsProfile\\initProfile.ps1'))
     		{
     			"Adding initProfile to $Profile"
-    			". `"$(split-path $profile)\PsProfile\initProfile.ps1`"" | Out-File $profile -append
+    			". `"$(split-path $profile)\PsProfile\initProfile.ps1`"" | Out-File $profile -append -encoding ASCII
     		}
         	. $profile
         popd
