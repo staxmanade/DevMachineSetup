@@ -1,4 +1,17 @@
-
+function Coalesce-Paths {
+    $result = $null
+    foreach($arg in $args) {
+        if ($arg -is [ScriptBlock]) {
+            $result = & $arg
+        } else {
+            $result = $arg
+        }
+        if($result){
+			if (test-path "$result") { break }
+			}
+    }
+    $result
+}
 
 $globalProfileScriptsPath = (get-item "$(split-path $profile)\PsProfile\GlobalScripts\")
 
@@ -13,8 +26,8 @@ Remove-Item alias:cd
 Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1")
 
 
-$tfPath = Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe'
-function tf(){ & $tfPath $args }
+$tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE\TF.exe'), (Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe')
+function tf(){ & $tfPath $args;}
 
 
 $notepadPath = Find-Program 'Notepad++\notepad++.exe'
