@@ -23,3 +23,8 @@ if($notepadPath)
     set-alias notepad $notepadPath
     set-alias np $notepadPath
 }
+
+if($error.Count -eq 0)
+{ 
+	cls
+}
