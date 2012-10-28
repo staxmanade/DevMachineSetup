@@ -47,7 +47,19 @@ function Internal-Change-Directory($cmd, $ShowCount){
 			
 			#If we are actually changing the dir.
 			if($pwd.Path -ne $newLocation){
-				Push-Location $newLocation
+			
+				# if the path exists
+				if( test-path $newLocation ){
+					Push-Location $newLocation
+				}
+				else {
+					$prompt = Read-Host "The folder doesn't exist, would you like to create it? [y/n]"
+					
+					if($prompt -eq 'y' -or $prompt -eq 'yes') {
+						mkdir $newLocation
+						Push-Location $newLocation
+					}
+				}
 			}
 		}
 	}
