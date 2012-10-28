@@ -60,7 +60,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 					Push-Location $newLocation
 				}
 				else {
-					$prompt = Read-Host "The folder doesn't exist, would you like to create it? [y/n]"
+					$prompt = Read-Host "Folder not found. Create it? [y/n]"
 					
 					if($prompt -eq 'y' -or $prompt -eq 'yes') {
 						mkdir $newLocation
