@@ -50,6 +50,13 @@ function Internal-Change-Directory($cmd, $ShowCount){
 			
 				# if the path exists
 				if( test-path $newLocation ){
+				
+					# if it's a file - get the directory then go there.
+
+					if( !(Get-Item $newLocation).PSIsContainer ) {
+						$newLocation = (split-path $newLocation)
+					}
+				
 					Push-Location $newLocation
 				}
 				else {
