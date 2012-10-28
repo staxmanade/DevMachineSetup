@@ -37,6 +37,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 			[int]$cdIndex = 0;
 			if([system.int32]::TryParse($cmd, [ref]$cdIndex)) {
 			
+				# Don't pull from the history if the index value is the same as a folder name
 				if( !(test-path $cdIndex) ) {
 					$results = (Get-CommandList);
 					if( ($results | measure).Count -eq 1 ){
