@@ -36,12 +36,15 @@ function Internal-Change-Directory($cmd, $ShowCount){
 			# check to see if we're using a number command and get the correct directory.
 			[int]$cdIndex = 0;
 			if([system.int32]::TryParse($cmd, [ref]$cdIndex)) {
-				$results = (Get-CommandList);
-				if( ($results | measure).Count -eq 1 ){
-					$newLocation = $results
-				}
-				else {
-					$newLocation = (Get-CommandList)[$cdIndex-1]
+			
+				if( !(test-path $cdIndex) ) {
+					$results = (Get-CommandList);
+					if( ($results | measure).Count -eq 1 ){
+						$newLocation = $results
+					}
+					else {
+						$newLocation = (Get-CommandList)[$cdIndex-1]
+					}
 				}
 			}
 			
