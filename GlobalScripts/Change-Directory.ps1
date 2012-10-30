@@ -3,7 +3,12 @@
 		> Remove-Item alias:cd
 		> Set-Alias cd C:\Code\Scripts\Change-Directory.ps1
 #>
-param($cmd, $ShowCount = 10)
+param(
+	$cmd,
+	$ShowCount = 10,
+	[switch] $force
+)
+
 function Internal-Change-Directory($cmd, $ShowCount){
 
 	function Get-CommandList() {
@@ -64,7 +69,12 @@ function Internal-Change-Directory($cmd, $ShowCount){
 					Push-Location $newLocation
 				}
 				else {
-					$prompt = Read-Host "Folder not found. Create it? [y/n]"
+					if($force) {
+						$prompt = 'y'
+					}
+					else {
+						$prompt = Read-Host "Folder not found. Create it? [y/n]"
+					}
 					
 					if($prompt -eq 'y' -or $prompt -eq 'yes') {
 						mkdir $newLocation
