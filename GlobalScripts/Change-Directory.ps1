@@ -62,7 +62,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 				
 					# if it's a file - get the directory then go there.
 
-					if( !(Get-Item $newLocation).PSIsContainer ) {
+					if( !(Get-Item $newLocation -Force).PSIsContainer ) {
 						$newLocation = (split-path $newLocation)
 					}
 				
