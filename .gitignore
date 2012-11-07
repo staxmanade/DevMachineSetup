@@ -62,6 +62,8 @@ Temp/
 # Files created by the git mergetool
 *.orig
 
+# VIM backup files
+*~
 
 #
 # CUSTOM PROJECT IGNORE

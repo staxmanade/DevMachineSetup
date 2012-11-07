@@ -13,9 +13,9 @@ function Coalesce-Paths {
     $result
 }
 
-$globalProfileScriptsPath = (get-item "$(split-path $profile)\PsProfile\GlobalScripts\")
+$globalProfileScriptsPath = "$(split-path $profile)\PsProfile\GlobalScripts\"
 
-foreach($file in $globalProfileScriptsPath.GetFiles("*.ps1"))
+foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
 {
 	"Dot Sourcing Script - $($file.FullName)"
 	. $file.FullName
@@ -30,11 +30,16 @@ $tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE
 function tf(){ & $tfPath $args;}
 
 
-$notepadPath = Find-Program 'Notepad++\notepad++.exe'
-if($notepadPath)
+$editorOfChoice = Find-Program 'vim\vim73\vim.exe'
+if(!$editorOfChoice){
+	$editorOfChoice = Find-Program 'Notepad++\notepad++.exe'
+}
+
+
+if($editorOfChoice)
 {
-    set-alias notepad $notepadPath
-    set-alias np $notepadPath
+    set-alias notepad $editorOfChoice
+    set-alias edit $editorOfChoice
 }
 
 if($error.Count -eq 0)
