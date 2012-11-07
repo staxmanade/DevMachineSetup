@@ -13,6 +13,24 @@ function Coalesce-Paths {
     $result
 }
 
+# - this will attempt to pull down the latest profile in the background.
+$profileUpdatedVar = "LastProfileUpdatedDate"
+
+if([Environment]::GetEnvironmentVariable($profileUpdatedVar, "User") -lt ((get-date).Date)) {
+    
+    if(test-path (split-path $profile)){
+        pushd (split-path $profile)
+         pushd PsProfile
+          git pull
+
+          [Environment]::SetEnvironmentVariable($profileUpdatedVar, (get-date).Date, "User")
+         popd
+        popd
+    }
+    else {
+	"Could not update profile because the folder doesn't exist? - weird!"
+    }
+}
 
 $globalProfileScriptsPath = "$(split-path $profile)\PsProfile\GlobalScripts\"
 
@@ -50,22 +68,6 @@ if($editorOfChoice)
 
 
 
-# - this will attempt to pull down the latest profile in the background.
-$profileUpdatedVar = "LastProfileUpdatedDate"
-
-if([Environment]::GetEnvironmentVariable($profileUpdatedVar, "User") -lt ((get-date).Date)) {
-    
-    if(test-path (split-path $profile)){
-        cd (split-path $profile)
-        CD PsProfile
-        git pull
-
-        [Environment]::SetEnvironmentVariable($profileUpdatedVar, (get-date).Date, "User")
-    }
-    else {
-	"Could not update profile because the folder doesn't exist? - weird!"
-    }
-}
 
 if($error.Count -eq 0)
 { 
