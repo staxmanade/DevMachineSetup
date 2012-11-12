@@ -58,7 +58,7 @@ function tf(){
 }
 
 
-$editorOfChoice = Coalesce-Paths (Find-Program 'vim\vim73\vim.exe') Find-Program 'Notepad++\notepad++.exe'
+$editorOfChoice = Coalesce-Paths (Find-Program 'vim\vim73\vim.exe') (Find-Program 'Notepad++\notepad++.exe')
 
 if($editorOfChoice)
 {
