@@ -1,6 +1,6 @@
-# install this script by executing
-#  iex ((new-object net.webclient).DownloadString('https://raw.github.com/staxmanade/Scripts/master/devInstall.ps1'))
-# 
+# Developer machine setup - run the below oneliner (in an elevated PS profile to setup a my development environment)
+#  iex ((new-object net.webclient).DownloadString('https://raw.github.com/staxmanade/DevMachineSetup/master/Bootstrap/BootIt.ps1'))
+#
 
 
 # Install Chocolatey from chocolatey.org
@@ -9,11 +9,9 @@ iex ((new-object net.webclient).DownloadString('http://bit.ly/psChocInstall'))
 # add chocolatey to the path since v0.9.8.16 doesn't do it.
 if(!(where.exe chocolatey)){ $env:Path += ';C:\Chocolatey\bin;' }
 
-# get the pre version because it has some features not yet released.
+# get the pre released version. It haz cool features!
 chocolatey install chocolatey -pre
 
-#Install all my favorite packages.
-#cinst all -source 'http://www.myget.org/F/6a72e3c34526424eacb4a37e8c21f809/'
 
 $chocolateyIds = '7zip
 notepadplusplus
@@ -41,15 +39,39 @@ $chocolateyIds | %{ cinstm $_ }
 
 
 
-if(!(where.exe git)){
 
-	$gitPath = 'C:\Program Files\git\bin\git.exe'
+import-module "$env:chocolateyinstall\chocolateyInstall\helpers\chocolateyInstaller.psm1"
+$helperDir = (Get-ChildItem $env:ChocolateyInstall\lib\boxstarter.helpers*)
+if($helperDir.Count -gt 1){$helperDir = $helperDir[-1]}
+import-module $helperDir\boxstarter.helpers.psm1
+
+Set-ExplorerOptions -showHidenFilesFoldersDrives -showProtectedOSFiles -showFileExtensions
+
+Install-ChocolateyPinnedTaskBarItem (Find-Program "Google\Chrome\Application\chrome.exe")
+Install-ChocolateyPinnedTaskBarItem "$env:SystemRoot\system32\WindowsPowerShell\v1.0\powershell.exe"
+
+Install-ChocolateyFileAssociation ".txt" "$editorOfChoice"
+Install-ChocolateyFileAssociation ".dll" "$env:ChocolateyInstall\bin\dotPeek.bat"
+
+
+
+
+
+
+if(!(where.exe git)){
+	#Why is git not on the PATH?
+
+	$gitPath = 'C:\Program Files\git\bin'
 	if(!(test-path $gitPath)){
-		$gitPath = 'C:\Program Files (x86)\Git\bin\git.exe'
+		$gitPath = 'C:\Program Files (x86)\Git\bin'
 	}
 
-	function git(){
-		& $gitPath $args
+	if(test-path "$gitPath\git.exe"){
+		$env:Path += ";$gitPath"
+	}
+	else{
+		throw "could not find git, rest of setup not going to execute..."
+		return;
 	}
 }
 
@@ -67,53 +89,4 @@ if($chocolateyIds -match 'p4merge') {
 }
 
 # setup local powershell profile.
-function initProfile()
-{
-    $profileDir = (split-path $profile)
-    if(! (test-path $profileDir))
-    {
-        mkdir $profileDir
-    }
-
-    pushd $profileDir
-
-        if(test-path PsProfile)
-        {
-            pushd PsProfile
-                try{
-					git pull
-                }
-                catch{
-                    $error
-                }
-            popd
-        }
-        else
-        {
-            git clone git://github.com/staxmanade/PsProfile.git
-        }
-
-        if(!(cat $profile | select-string 'PsProfile\\initProfile.ps1'))
-        {
-            "Adding initProfile to $Profile"
-            ". `"$(split-path $profile)\PsProfile\initProfile.ps1`"" | Out-File $profile -append -encoding ASCII
-        }
-        . $profile
-    popd
-}
-
-initProfile
-
-
-import-module "$env:chocolateyinstall\chocolateyInstall\helpers\chocolateyInstaller.psm1"
-$helperDir = (Get-ChildItem $env:ChocolateyInstall\lib\boxstarter.helpers*)
-if($helperDir.Count -gt 1){$helperDir = $helperDir[-1]}
-import-module $helperDir\boxstarter.helpers.psm1
-
-Set-ExplorerOptions -showHidenFilesFoldersDrives -showProtectedOSFiles -showFileExtensions
-
-Install-ChocolateyPinnedTaskBarItem (Find-Program "Google\Chrome\Application\chrome.exe")
-Install-ChocolateyPinnedTaskBarItem "$env:SystemRoot\system32\WindowsPowerShell\v1.0\powershell.exe"
-
-Install-ChocolateyFileAssociation ".txt" "$editorOfChoice"
-Install-ChocolateyFileAssociation ".dll" "$env:ChocolateyInstall\bin\dotPeek.bat"
+iex ((new-object net.webclient).DownloadString('https://raw.github.com/staxmanade/DevMachineSetup/master/Bootstrap/initPsProfile.ps1'))
