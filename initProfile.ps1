@@ -33,43 +33,43 @@ if([Environment]::GetEnvironmentVariable($profileUpdatedVar, "User") -lt ((get-d
 }
 
 $globalProfileScriptsPath = "$(split-path $profile)\DevMachineSetup\GlobalScripts\"
-
 foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
-{
-	"Dot Sourcing Script - $($file.FullName)"
-	. $file.FullName
-}
-
-
-Remove-Item alias:cd
-Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1")
-
-
-$tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE\TF.exe' -force) (Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe' -force)
-function tf(){ 
+{
+	"Dot Sourcing Script - $($file.FullName)"
+	. $file.FullName
+}
 
+
+
+
+
+Remove-Item alias:cd
+Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1")
+
+
+
+$tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE\TF.exe' -force) (Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe' -force)
+function tf(){ 
 	if($tfPath -and (test-path $tfPath)) {
 		& $tfPath $args;
 	}
 	else {
 		throw "TF path [$tfPath] could not be found"
 	}
-	
 }
 
 
 $editorOfChoice = Coalesce-Paths (Find-Program 'vim\vim73\vim.exe') (Find-Program 'Notepad++\notepad++.exe')
-
-if($editorOfChoice)
-{
-    set-alias notepad $editorOfChoice
-    set-alias edit $editorOfChoice
-}
-
+if($editorOfChoice)
+{
+    set-alias notepad $editorOfChoice
+    set-alias edit $editorOfChoice
+}
 
 
 
-if($error.Count -eq 0)
-{ 
-	cls
+
+if($error.Count -eq 0)
+{
+	cls
 }
