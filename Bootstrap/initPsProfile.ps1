@@ -31,7 +31,7 @@ pushd $profileDir
 	}
 	else
 	{
-		git clone git@github.com:staxmanade/DevMachineSetup.git
+		git clone https://github.com/staxmanade/DevMachineSetup.git
 	}
 
 	if(!(cat $profile | select-string 'DevMachineSetup\\initProfile.ps1'))
