@@ -17,10 +17,10 @@ function Coalesce-Paths {
 $profileUpdatedVar = "LastProfileUpdatedDate"
 
 if([Environment]::GetEnvironmentVariable($profileUpdatedVar, "User") -lt ((get-date).Date)) {
-    
+
     if(test-path (split-path $profile)){
         pushd (split-path $profile)
-         pushd PsProfile
+         pushd DevMachineSetup
           git pull
 
           [Environment]::SetEnvironmentVariable($profileUpdatedVar, (get-date).Date, "User")
@@ -32,7 +32,7 @@ if([Environment]::GetEnvironmentVariable($profileUpdatedVar, "User") -lt ((get-d
     }
 }
 
-$globalProfileScriptsPath = "$(split-path $profile)\PsProfile\GlobalScripts\"
+$globalProfileScriptsPath = "$(split-path $profile)\DevMachineSetup\GlobalScripts\"
 
 foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
 {
