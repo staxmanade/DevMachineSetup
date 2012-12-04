@@ -1,9 +1,48 @@
 
-# stole this from Provost
-# https://github.com/PProvost/dotfiles/blob/master/powershell/find-string.ps1
+# copied this from
+# http://weblogs.asp.net/whaggard/archive/2007/03/23/powershell-script-to-find-strings-and-highlight-them-in-the-output.aspx
 
-$local:command_usage = "usage: find-string glob text"
-if ($args.length -lt 2) { return ($command_usage) }
-get-childitem -recurse -include $args[0] | select-string $args[1] | group-object Path | select-object @{Expression={ $_.Name.Substring((get-location).Path.Length + 1) }; Name="Filename" }, @{Expression={ $_.Group | foreach-object { $_.LineNumber} }; Name="Line Numbers"} | format-table -Autosize
+function Find-String(){
+	# Find-String.ps1
+	#  Wrapper around dir | select-string which will highlight the pattern in the results
+	param	( [string] $pattern = ""
+		, [string] $filter = "*.*"
+		, [switch] $recurse = $false
+		, [switch] $caseSensitive = $false)
 
+	if ($pattern -eq $null -or $pattern -eq "") { Write-Error "Please provide a search pattern!" ; return }
 
+	$regexPattern = $pattern
+	if($caseSensitive -eq $false) { $regexPattern = "(?i)$regexPattern" }
+	$regex = New-Object System.Text.RegularExpressions.Regex $regexPattern
+
+	# Write the line with the pattern highlighted in red
+	function Write-HostAndHighlightPattern([string]$inputText)
+	{
+		$index = 0
+		while($index -lt $inputText.Length)
+		{
+			$match = $regex.Match($inputText, $index)
+			if($match.Success -and $match.Length -gt 0)
+			{
+				Write-Host $inputText.SubString($index, $match.Index - $index) -nonewline
+				Write-Host $match.Value.ToString() -ForegroundColor Red -nonewline
+				$index = $match.Index + $match.Length
+			}
+			else
+			{
+				Write-Host $inputText.SubString($index) -nonewline
+				$index = $inputText.Length
+			}
+		}
+	}
+
+	# Do the actual find in the files
+	Get-ChildItem -recurse:$recurse -filter:$filter | where { !$_.PSIsContainer } | where { !(Is-FileBinary $_) } |
+		Select-String -caseSensitive:$caseSensitive -pattern:$pattern |	
+		foreach {
+			Write-Host "$($_.FileName)($($_.LineNumber)): " -nonewline
+			Write-HostAndHighlightPattern $_.Line
+			Write-Host
+		}
+}
