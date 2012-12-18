@@ -77,6 +77,8 @@ if(!(where.exe git)){
 
 git config --global user.email jason@elegantcode.com
 git config --global user.name 'Jason Jarrett'
+git config --global color.status.changed "cyan normal bold" 
+git config --global color.status.untracked "cyan normal bold"
 
 # configure git diff and merge if p4merge was installed
 if($chocolateyIds -match 'p4merge') {
