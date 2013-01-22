@@ -16,7 +16,7 @@ function gitinit()
 function gitGo($message) {
 
 	git add .
-	git commit -m $message
+	git commit . -m $message
 
 
 }
