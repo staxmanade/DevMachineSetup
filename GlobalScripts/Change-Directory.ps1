@@ -25,7 +25,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 		$global:CD_COMMAND_HISTORY_LIST | sort -Unique
 	}
 
-	function Print-Extended-CD-Menu(){
+	function Print-Extended-CD-Menu() {
 		$index = 1;
 		foreach($location in Get-CommandList){
 			if($index -eq 0) {
@@ -44,6 +44,11 @@ function Internal-Change-Directory($cmd, $ShowCount){
 	switch($cmd) {
 		"" { Print-Extended-CD-Menu }
 		"?" { Print-Extended-CD-Menu }
+		"-" {
+            if($global:CD_COMMAND_HISTORY_LIST.Count -ge 2) {
+                Set-CDLocation ($global:CD_COMMAND_HISTORY_LIST[$global:CD_COMMAND_HISTORY_LIST.Count-2])
+            }
+        }
 		default {
 		
 			$newLocation = $cmd;
