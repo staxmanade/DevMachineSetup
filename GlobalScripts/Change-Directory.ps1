@@ -11,8 +11,18 @@ param(
 
 function Internal-Change-Directory($cmd, $ShowCount){
 
+    if(!$global:CD_COMMAND_HISTORY_LIST) {
+        $global:CD_COMMAND_HISTORY_LIST = New-Object 'System.Collections.Generic.List[string]'
+    }
+
+    function Set-CDLocation($newLocation) {
+        $newLocation = get-item $newLocation;
+        $global:CD_COMMAND_HISTORY_LIST.Add($newLocation)
+        Push-Location $newLocation
+    }
+
 	function Get-CommandList() {
-		(Get-Location -Stack).ToArray() | sort Path -Unique
+		$global:CD_COMMAND_HISTORY_LIST | sort -Unique
 	}
 
 	function Print-Extended-CD-Menu(){
@@ -49,7 +59,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 						$newLocation = $results
 					}
 					else {
-						$newLocation = (Get-CommandList)[$cdIndex-1]
+						$newLocation = $results[$cdIndex-1]
 					}
 				}
 			}
@@ -66,7 +76,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 						$newLocation = (split-path $newLocation)
 					}
 				
-					Push-Location $newLocation
+					Set-CDLocation $newLocation
 				}
 				else {
 					if($force) {
@@ -78,7 +88,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 					
 					if($prompt -eq 'y' -or $prompt -eq 'yes') {
 						mkdir $newLocation
-						Push-Location $newLocation
+						Set-CDLocation $newLocation
 					}
 				}
 			}
