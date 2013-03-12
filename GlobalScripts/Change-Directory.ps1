@@ -44,6 +44,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 	switch($cmd) {
 		"" { Print-Extended-CD-Menu }
 		"?" { Print-Extended-CD-Menu }
+		"--help" { Print-Extended-CD-Menu }
 		"-" {
             if($global:CD_COMMAND_HISTORY_LIST.Count -ge 2) {
                 Set-CDLocation ($global:CD_COMMAND_HISTORY_LIST[$global:CD_COMMAND_HISTORY_LIST.Count-2])
@@ -75,8 +76,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 				# if the path exists
 				if( test-path $newLocation ){
 				
-					# if it's a file - get the directory then go there.
-
+					# if it's a file - get the file's directory.
 					if( !(Get-Item $newLocation -Force).PSIsContainer ) {
 						$newLocation = (split-path $newLocation)
 					}
