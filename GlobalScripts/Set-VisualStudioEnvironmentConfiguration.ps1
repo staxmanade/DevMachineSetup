@@ -10,5 +10,8 @@ function Set-VisualStudioEnvironmentConfiguration(){
 	
 	# Turn on line numbers for ALL language types
 	($DTE.Properties("TextEditor", "AllLanguages") | where {$_.Name -eq "ShowLineNumbers" } ).Value = $true
+	
+	# Autoload files when they've changed on disk - great for git branch switching or typescript reloads of js files.
+	($DTE.Properties("Environment", "Documents") | where {$_.Name -eq "AutoloadExternalChanges" }).Value = $true
 
 }
