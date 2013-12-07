@@ -39,3 +39,4 @@ function gitstandup() {
 function gitsummary(){
 	git shortlog --numbered --summary
 }
+function gitFixWhiteSpace { git rm --cached -r .; git reset --hard; }
