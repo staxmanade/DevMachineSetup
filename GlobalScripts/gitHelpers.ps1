@@ -35,3 +35,7 @@ function gitstandup() {
 	# http://alexefish.com/post/18453172089/pretty-git-logging
 	git log --author=Jason --graph --full-history --all --color --pretty=format:"%ar %x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"
 }
+
+function gitsummary(){
+	git shortlog --numbered --summary
+}
