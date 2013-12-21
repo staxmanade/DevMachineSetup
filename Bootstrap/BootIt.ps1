@@ -22,6 +22,7 @@ P4Merge
 wincommandpaste
 linqpad4
 putty
+f.lux
 SkyDrive
 paint.net
 git-credential-winstore
