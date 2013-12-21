@@ -29,7 +29,7 @@ git-credential-winstore
 dotpeek
 googlechrome
 WindowsLiveWriter
-boxstarter.helpers'
+boxstarter'
 
 $chocolateyIds > ChocolateyInstallIds.txt
 $path = get-item 'ChocolateyInstallIds.txt'
@@ -54,7 +54,7 @@ Install-ChocolateyPinnedTaskBarItem "$env:SystemRoot\system32\WindowsPowerShell\
 Install-ChocolateyFileAssociation ".txt" "$editorOfChoice"
 Install-ChocolateyFileAssociation ".dll" "$env:ChocolateyInstall\bin\dotPeek.bat"
 
-
+Enable-RemoteDesktop
 
 
 
@@ -93,3 +93,6 @@ if($chocolateyIds -match 'p4merge') {
 
 # setup local powershell profile.
 iex ((new-object net.webclient).DownloadString('https://raw.github.com/staxmanade/DevMachineSetup/master/Bootstrap/initPsProfile.ps1'))
+
+
+Install-WindowsUpdate -AcceptEulaInstall-WindowsUpdate -AcceptEula
