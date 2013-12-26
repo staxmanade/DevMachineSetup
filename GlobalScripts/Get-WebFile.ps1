@@ -90,4 +90,4 @@ function Get-WebFile {
       ls $fileName
    }
 }
-set-alias wget Get-WebFile
+#set-alias wget Get-WebFile

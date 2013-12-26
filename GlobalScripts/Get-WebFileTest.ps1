@@ -26,4 +26,3 @@ function Get-WebFileTest {
 
     }
 }
-set-alias wget Get-WebFileTest
