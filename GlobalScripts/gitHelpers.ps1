@@ -37,6 +37,6 @@ function gitstandup() {
 }
 
 function gitsummary(){
-	git shortlog --numbered --summary
+	git shortlog --numbered --summary --no-merges
 }
 function gitFixWhiteSpace { git rm --cached -r .; git reset --hard; }
