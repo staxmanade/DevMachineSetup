@@ -41,10 +41,8 @@ foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
 
 
 
-
-
-Remove-Item alias:cd
-Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1")
+Remove-Item alias:cd 
+Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1") -Option AllScope
 
 
 
