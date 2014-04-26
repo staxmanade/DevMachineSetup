@@ -41,11 +41,6 @@ foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
 
 
 
-Remove-Item alias:cd 
-Set-Alias cd (Get-Item "$($globalProfileScriptsPath)\Change-Directory.ps1") -Option AllScope
-
-
-
 $tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE\TF.exe' -force) (Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe' -force)
 function tf(){ 
 	if($tfPath -and (test-path $tfPath)) {

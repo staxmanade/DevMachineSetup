@@ -1,13 +1,3 @@
-<#
-	How to replace the default "CD" command.
-		> Remove-Item alias:cd
-		> Set-Alias cd C:\Code\Scripts\Change-Directory.ps1
-#>
-param(
-	$cmd,
-	$ShowCount = 10,
-	[switch] $force
-)
 
 function Internal-Change-Directory($cmd, $ShowCount){
 
@@ -102,3 +92,6 @@ function Internal-Change-Directory($cmd, $ShowCount){
 }
 
 Internal-Change-Directory -cmd $cmd -ShowCount $ShowCount
+
+Set-Alias -Name Remove-Item -Value Internal-Remove-Item -Option AllScope
+Set-Alias -Name cd -Value Internal-Change-Directory -Option AllScope
