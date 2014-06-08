@@ -1,6 +1,10 @@
 
 function Internal-Change-Directory($cmd, $ShowCount){
 
+    if(!$ShowCount) {
+        $ShowCount = 10;
+    }
+
     if(!$global:CD_COMMAND_HISTORY_LIST) {
         $global:CD_COMMAND_HISTORY_LIST = New-Object 'System.Collections.Generic.List[string]'
     }
@@ -18,12 +22,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 	function Print-Extended-CD-Menu() {
 		$index = 1;
 		foreach($location in Get-CommandList){
-			if($index -eq 0) {
 				Write-Host ("{0,6}) {1}" -f $index, $location)
-			}
-			else {
-				Write-Host ("{0,6}) {1}" -f $index, $location)
-			}
 			$index++
 			if($index -gt $ShowCount){
 				break;
