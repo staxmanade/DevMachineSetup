@@ -1,5 +1,10 @@
+
+> By: [@staxmanade](http://staxmanade.com)
+
 Purpose for repo!
 --
+
+
 
 To organize the configuration and setup of my typical development environment.
 
