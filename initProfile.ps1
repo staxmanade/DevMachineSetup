@@ -42,7 +42,7 @@ foreach($file in (ls "$globalProfileScriptsPath*.ps1"))
 
 
 $tfPath = Coalesce-Paths (Find-Program 'Microsoft Visual Studio 11.0\Common7\IDE\TF.exe' -force) (Find-Program 'Microsoft Visual Studio 10.0\Common7\IDE\TF.exe' -force)
-function tf(){ 
+function tf(){
 	if($tfPath -and (test-path $tfPath)) {
 		& $tfPath $args;
 	}
@@ -59,7 +59,8 @@ if($editorOfChoice)
     set-alias edit $editorOfChoice
 }
 
-
+# got used to using 'open' on the mac to open files
+set-alias open invoke-item
 
 
 if($error.Count -eq 0)
