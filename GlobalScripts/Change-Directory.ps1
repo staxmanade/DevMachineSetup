@@ -43,6 +43,16 @@ function Internal-Change-Directory($cmd, $ShowCount){
 
 			$newLocation = $cmd;
 
+			# Turn "cd ...." into "cd ../../../"
+			if ($newLocation -match "^\.*$" -and $newLocation.length -gt 2) {
+				$numberToChange = $newLocation.length - 1
+				$newLocation = ""
+				for($i = 0; $i -lt $numberToChange; $i++) {
+					$newLocation += "../"
+				}
+			}
+
+
 			# check to see if we're using a number command and get the correct directory.
 			[int]$cdIndex = 0;
 			if([system.int32]::TryParse($cmd, [ref]$cdIndex)) {
