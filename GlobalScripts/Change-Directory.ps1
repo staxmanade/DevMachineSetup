@@ -1,19 +1,19 @@
 
 function Internal-Change-Directory($cmd, $ShowCount){
 
-    if(!$ShowCount) {
-        $ShowCount = 10;
-    }
+	if(!$ShowCount) {
+		$ShowCount = 10;
+	}
 
-    if(!$global:CD_COMMAND_HISTORY_LIST) {
-        $global:CD_COMMAND_HISTORY_LIST = New-Object 'System.Collections.Generic.List[string]'
-    }
+	if(!$global:CD_COMMAND_HISTORY_LIST) {
+		$global:CD_COMMAND_HISTORY_LIST = New-Object 'System.Collections.Generic.List[string]'
+	}
 
-    function Set-CDLocation($newLocation) {
-        $newLocation = get-item $newLocation;
-        $global:CD_COMMAND_HISTORY_LIST.Add($newLocation)
-        Push-Location $newLocation
-    }
+	function Set-CDLocation($newLocation) {
+		$newLocation = get-item $newLocation;
+		$global:CD_COMMAND_HISTORY_LIST.Add($newLocation)
+		Push-Location $newLocation
+	}
 
 	function Get-CommandList() {
 		$global:CD_COMMAND_HISTORY_LIST | sort -Unique
@@ -35,18 +35,18 @@ function Internal-Change-Directory($cmd, $ShowCount){
 		"?" { Print-Extended-CD-Menu }
 		"--help" { Print-Extended-CD-Menu }
 		"-" {
-            if($global:CD_COMMAND_HISTORY_LIST.Count -ge 2) {
-                Set-CDLocation ($global:CD_COMMAND_HISTORY_LIST[$global:CD_COMMAND_HISTORY_LIST.Count-2])
-            }
-        }
+			if($global:CD_COMMAND_HISTORY_LIST.Count -ge 2) {
+				Set-CDLocation ($global:CD_COMMAND_HISTORY_LIST[$global:CD_COMMAND_HISTORY_LIST.Count-2])
+			}
+		}
 		default {
-		
+
 			$newLocation = $cmd;
 
 			# check to see if we're using a number command and get the correct directory.
 			[int]$cdIndex = 0;
 			if([system.int32]::TryParse($cmd, [ref]$cdIndex)) {
-			
+
 				# Don't pull from the history if the index value is the same as a folder name
 				if( !(test-path $cdIndex) ) {
 					$results = (Get-CommandList);
@@ -58,18 +58,18 @@ function Internal-Change-Directory($cmd, $ShowCount){
 					}
 				}
 			}
-			
+
 			#If we are actually changing the dir.
 			if($pwd.Path -ne $newLocation){
-			
+
 				# if the path exists
 				if( test-path $newLocation ){
-				
+
 					# if it's a file - get the file's directory.
 					if( !(Get-Item $newLocation -Force).PSIsContainer ) {
 						$newLocation = (split-path $newLocation)
 					}
-				
+
 					Set-CDLocation $newLocation
 				}
 				else {
@@ -79,7 +79,7 @@ function Internal-Change-Directory($cmd, $ShowCount){
 					else {
 						$prompt = Read-Host "Folder not found. Create it? [y/n]"
 					}
-					
+
 					if($prompt -eq 'y' -or $prompt -eq 'yes') {
 						mkdir $newLocation
 						Set-CDLocation $newLocation
