@@ -102,5 +102,13 @@ function Internal-Change-Directory($cmd, $ShowCount){
 
 Internal-Change-Directory -cmd $cmd -ShowCount $ShowCount
 
-Set-Alias -Name Remove-Item -Value Internal-Remove-Item -Option AllScope
+# allow typing `..` to go up 1 dir or `....` to go up 3 dirs
+function ..() { cd .. }
+function ...() { cd ... }
+function ....() { cd .... }
+function .....() { cd ..... }
+function ......() { cd ...... }
+function .......() { cd ....... }
+function ........() { cd ........ }
+
 Set-Alias -Name cd -Value Internal-Change-Directory -Option AllScope
